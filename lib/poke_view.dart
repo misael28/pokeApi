@@ -19,11 +19,29 @@ class _PokeViewState extends State<PokeView> {
           FutureBuilder<Pokemon>(
             future: controller.pokemon,
             builder: (context, snapshot){
+              if(snapshot.connectionState != ConnectionState.done){
+                return CircularProgressIndicator();
+              }
+
               if(snapshot.hasData){
-                return Text(snapshot.data.nome, style: TextStyle(
-                  fontSize: 30,
-                  color: Colors.black,
-                ));
+                return Column(
+                  children: [
+                    Image.network(snapshot.data.urlImage,
+                    height: 400,
+                    width:400,
+                    fit: BoxFit.cover),
+                    Text(snapshot.data.nome, style: TextStyle(
+                      fontSize: 30,
+                      color: Colors.black,
+                    )),
+                  ], 
+                );
+              } else if (snapshot.hasError) { 
+                return Text(snapshot.error,
+                style: 
+                TextStyle(
+                  color: Colors.red, 
+                  fontSize: 20));
               }
               return Container();
             },),
