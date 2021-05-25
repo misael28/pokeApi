@@ -2,14 +2,18 @@ import 'dart:math';
 
 import 'package:pokemon/pokemon.dart';
 
+import 'dart:async';
 import './poke_model.dart';
 
-class PokeController {
+class PokeViewModel {
   final model = PokeModel();
-
-  Future<Pokemon> get pokemon => model.pokemon;
   
+  StreamController<Pokemon> streamPokemon = StreamController(); 
+
   loadPokemon(){
     model.fetchPokemon(Random().nextInt(1000));
+    model.pokemon.then((value){
+      streamPokemon.add(value);
+    });
   }
 }
